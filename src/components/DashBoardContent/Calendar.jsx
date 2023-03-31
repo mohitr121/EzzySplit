@@ -10,6 +10,7 @@ const Calendar = () => {
     <StaticDatePicker orientation="portrait" 
         openTo='day'
         value={value}
+      
         onChange={(newValue) => setValue(newValue)}
        
     />
