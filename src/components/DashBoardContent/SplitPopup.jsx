@@ -2,20 +2,6 @@ import React from 'react'
 
 import { VscClose, VscChecklist, VscGrabber } from "react-icons/vsc";
 import { CgProfile } from "react-icons/cg";
-const data = [
-  {
-    id: '1',
-    icon: <CgProfile />,
-    fname: 'Mohit',
-    lname: 'Ranjan',
-  },
-  {
-    id: '2',
-    icon: <CgProfile />,
-    fname: 'Nikhil',
-    lname: 'Vinay',
-  }
-]
 
 const SplitPopup = (props) => {
   return (
@@ -37,8 +23,9 @@ const SplitPopup = (props) => {
 
             {/* split exp div */}
 
+          <div className='overflow-y-auto max-h-[350px] scrollbar-thin scrollbar-w-[3px] scrollbar-thumb-slate-800'>
 
-            <div className=' m-3 overflow-hidden'>
+            <div className=' m-3 overflow-hidden '>
               <div className="flex"> <a className="bg-blue-500 block cursor-pointer text-center hover:bg-blue-700 text-white font-semibold py-2 px-5 rounded-full m-auto w-2/3">
                 split the expences
               </a></div>
@@ -67,14 +54,16 @@ const SplitPopup = (props) => {
               <div className="m-3">
                 <div className="font-semibold mb-1 text-lg"> Split Equaly</div>
                 <div >
-                  {data.map((item) => {
+                  {props.groupDetails.userId.map((item) => {
 
                     return <div key={item.id} className=" flex justify-between mb-4 mt-2">
 
                       <div className=" flex space-x-2 items-center">
-                        <input type="checkbox"  />
-                        {item.icon}
-                        <span><span className='font-semibold m-1'>{item.fname}</span> {item.lname}</span>
+                      <div>
+              <input type="checkbox" className='rounded-lg '/>
+              </div>
+                        <CgProfile/>
+                        <span className='font-semibold m-1'>{item.name}</span>
 
                       </div>
                       <div ><input type="text" placeholder='$ 0.00' className='rounded-lg h-7 w-20 ' /></div>
@@ -88,6 +77,7 @@ const SplitPopup = (props) => {
             </div>
 
 
+            </div>
           {/* </div>
         </div> */}
       </div>

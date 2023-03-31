@@ -57,6 +57,12 @@ const DashBoardContent = () => {
           // console.log(response.data.group.expenseId);
           // console.log(response.data.group.expenseId[0].amount);
           // console.log(grData);
+          console.log("Working on groups");
+          console.log(`resp: ${resp}`);
+          console.log(`resp.data: ${resp.data}`);
+          console.log(`resp.data.group: ${resp.data.group}`);
+          console.log(`resp.data.group.groupName: ${resp.data.group.groupName}`);
+          console.log("End group");
         });
     } catch (err) {
       console.log(err);
@@ -178,7 +184,7 @@ const DashBoardContent = () => {
   return (
     <>
       <div>
-        <AddExpenses />
+        <AddExpenses groupDetails = {grData} />
       </div>
       <div className="mt-6">
         <div className="flex w-full flex-wrap justify-left ">
@@ -259,10 +265,10 @@ const DashBoardContent = () => {
             <div className="p-2 w-1/4">Date</div>
           </div>
 
-          <div className="overflow-hidden scrollbar-none scroll-smooth">
+          <div className=" max-h-[375px] overflow-y-auto scrollbar-none scroll-smooth">
             {grData.expenseId ? (
               grData.expenseId.map((expenses) => (
-                <div className="overflow-auto scrollbar-none hover:overflow-scroll">
+                <div className="">
                   <div
                     key={expenses._id}
                     className="text-black ml-8 mr-8 m-2 flex border-b-2"
