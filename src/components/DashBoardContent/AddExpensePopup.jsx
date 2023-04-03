@@ -13,33 +13,27 @@ import { Dna } from 'react-loader-spinner'
 
 const AddExpensePopup = (props) => {
 
+
+    const tdDate = new Date();
+    const [expDate,FexpDate] = useState(tdDate);
+    const cngExpDate = (val)=>{
+        FexpDate(val);
+    }
+
     const [err, setErr] = useState(false);
     const [description, setDescription] = useState('');
     const [amount, setAmount] = useState('');
 
     const handleCheck = () => {
-        // console.log("Before");
-        // console.log(err);
         if (description.length <= 0 || amount.length <= 0) setErr(true);
         if (description.length > 0 && amount.length > 0) {
             setErr(false);
         }
-        // console.log("Err after");
-        // console.log(err);
-        // console.log(description);
-
     }
     
     const [notes, Fnotes] = useState('');
     const cngNotes = (value) => {
         Fnotes(value);
-    }
-    const dt = new Date();
-    const [paymentDate, FpaymentDate] = useState(dt);
-    // console.log(dt);
-    // console.log(paymentDate);
-    const cngDate = (value) => {
-        FpaymentDate(value);
     }
     const [tglSaveBtn, FtglSaveBtn] = useState(true);
 
@@ -283,7 +277,7 @@ const AddExpensePopup = (props) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    amount, description, groupId, paidBy: fnarr, split_method, split_between: SplitArr, notes
+                    amount, description, groupId, paidBy: fnarr, split_method, split_between: SplitArr, notes,expDate
                 })
             })
             const data = await res.json();
@@ -402,7 +396,9 @@ const AddExpensePopup = (props) => {
                                     <div className='py-1 px-4 mr-3 text-base font-normal bg-primary text-gray-900 rounded-lg dark:text-white hover:bg-primary dark:hover:bg-gray-700  '>
                                         <button className=' text-lg opacity-0.9 text-white hover:drop-shadow-xl rounded-full' onClick={addDate}>
 
-                                            02 April 2023
+                                            {
+                                                expDate.toString().substring(4,15)
+                                            }
                                         </button>
                                     </div>
                                     <div className='py-1 px-4 mr-3 text-base font-normal bg-primary text-gray-900 rounded-lg dark:text-white hover:bg-primary dark:hover:bg-gray-700 '>
@@ -488,8 +484,7 @@ const AddExpensePopup = (props) => {
                             InputSplitEquilly={InputSplitEquilly}
                         />}
                         {addon === 3 && <AddDatePopup
-                            paymentDate={paymentDate}
-                            cngDate={cngDate}
+                            cngExpDate={cngExpDate}
                             closeAdd={closeAdd}
                         />}
                         {addon === 4 && <AddNotePopup

@@ -10,15 +10,11 @@ const Calendar = (props) => {
     <StaticDatePicker orientation="portrait" 
         openTo='day'
         value={value}
-        onChange={(newValue) => setValue(newValue)}
-        // value={props.paymentDate}
-    
-        // onChange={
-        //   (e)=>{
-        //     const value = e.target.value;
-        //     props.cngDate(value);
-        //   }
-        // }
+        onChange={(newValue) => {
+          setValue(newValue);
+          props.cngExpDate(newValue);
+          props.closeAdd();
+          }}
        
     />
   </LocalizationProvider>

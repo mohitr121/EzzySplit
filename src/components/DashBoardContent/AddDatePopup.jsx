@@ -13,7 +13,9 @@ const AddDatePopup = (props) => {
               <VscClose />
             </button>
           </div>
-          <Calendar/> 
+          <Calendar cngExpDate={props.cngExpDate}
+closeAdd={props.closeAdd}
+          /> 
       </div>
           
     </>
