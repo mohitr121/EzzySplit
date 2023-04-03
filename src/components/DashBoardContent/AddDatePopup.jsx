@@ -14,8 +14,6 @@ const AddDatePopup = (props) => {
             </button>
           </div>
           <Calendar/> 
-        
-          
       </div>
           
     </>

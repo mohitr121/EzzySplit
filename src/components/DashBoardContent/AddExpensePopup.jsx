@@ -13,6 +13,34 @@ import { Dna } from 'react-loader-spinner'
 
 const AddExpensePopup = (props) => {
 
+    const [err, setErr] = useState(false);
+    const [description, setDescription] = useState('');
+    const [amount, setAmount] = useState('');
+
+    const handleCheck = () => {
+        // console.log("Before");
+        // console.log(err);
+        if (description.length <= 0 || amount.length <= 0) setErr(true);
+        if (description.length > 0 && amount.length > 0) {
+            setErr(false);
+        }
+        // console.log("Err after");
+        // console.log(err);
+        // console.log(description);
+
+    }
+    
+    const [notes, Fnotes] = useState('');
+    const cngNotes = (value) => {
+        Fnotes(value);
+    }
+    const dt = new Date();
+    const [paymentDate, FpaymentDate] = useState(dt);
+    // console.log(dt);
+    // console.log(paymentDate);
+    const cngDate = (value) => {
+        FpaymentDate(value);
+    }
     const [tglSaveBtn, FtglSaveBtn] = useState(true);
 
     const notify = () => {
@@ -45,7 +73,7 @@ const AddExpensePopup = (props) => {
     const [inputData, FinputData] = useState({
         amount: "",
         description: "",
-        groupId: "63e28d86e007610a77e259da"
+        groupId: "64283b4cb3dc45d696bc578b"
     });
 
     const [paidByArr, FpaidByArr] = useState([
@@ -113,7 +141,7 @@ const AddExpensePopup = (props) => {
             name: perName
         }];
         // Payer is user who loggined
-        if (name === '63d645f7e653329b6cab4ef8') {
+        if (name === '642839ceb3dc45d696bc5786') {
             Fpayer("You");
         }
         FpaidBySingle(() => [...tempArr]);
@@ -122,9 +150,7 @@ const AddExpensePopup = (props) => {
     useEffect(() => {
         console.log("paid by Single:", paidBySingle);
     }, [paidBySingle]);
-    const InputEvent = (e) => {
-        const name = e.target.name;
-        const value = e.target.value;
+    const InputEvent = (name, value) => {
         FinputData({ ...inputData, [name]: value });
     }
 
@@ -219,7 +245,7 @@ const AddExpensePopup = (props) => {
             if (payer === "You") {
                 fnarr = [
                     {
-                        userId: '63d645f7e653329b6cab4ef8',
+                        userId: '642839ceb3dc45d696bc5786',
                         amount: inputData.amount,
                         name: 'test1'
                     }
@@ -233,7 +259,7 @@ const AddExpensePopup = (props) => {
             }
 
             var SplitArr = [];
-            if (split_method == "equally") {
+            if (split_method === "equally") {
                 const IntAmount = parseInt(inputData.amount);
                 const equl = IntAmount / (splitBetween.length);
                 const toStrEuql = equl.toString();
@@ -246,7 +272,7 @@ const AddExpensePopup = (props) => {
                     }
                 });
             }
-            else{
+            else {
                 SplitArr = splitBetween.filter(val => val.toPay !== '');
             }
 
@@ -257,7 +283,7 @@ const AddExpensePopup = (props) => {
                     "Content-Type": "application/json"
                 },
                 body: JSON.stringify({
-                    amount, description, groupId, paidBy: fnarr, split_method, split_between: SplitArr
+                    amount, description, groupId, paidBy: fnarr, split_method, split_between: SplitArr, notes
                 })
             })
             const data = await res.json();
@@ -268,19 +294,18 @@ const AddExpensePopup = (props) => {
             FinputData({
                 amount: "",
                 description: "",
-                groupId: "63e28d86e007610a77e259da"
+                groupId: "64283b4cb3dc45d696bc578b"
             })
 
         } catch (error) {
+            FtglSaveBtn(true);
             failed();
             console.log("Error in Adding Expenses");
         }
     }
 
 
-
-
-
+    //const intamount = parseInt(inputData.amount)
     return (
         <>
             {/* <div className='bg-neutral-200 opacity-90 fixed inset-0 z-50 flex-col '> */}
@@ -311,24 +336,44 @@ const AddExpensePopup = (props) => {
                                     </div>
                                     <div className='w-3/5  '>
                                         <div className='border-b-[1px] border-dotted border-emerald-500'>
+
                                             <input type="text"
                                                 placeholder='Enter description'
                                                 className='rounded-lg h-7 w-full border-none focus:ring-0'
                                                 name='description'
                                                 value={inputData.description}
-                                                onChange={InputEvent}
+                                                onChange={(e) => {
+                                                    const name = e.target.name;
+                                                    const value = e.target.value;
+                                                    setDescription(value);
+                                                    handleCheck()
+                                                    // console.log(value);
+                                                    InputEvent(name, value);
+                                                }}
                                             />
                                         </div>
+                                        {err && description.length <= 0 ?
+                                            <label className='text-red-600 text-sm'>description can not be blank</label> : ""}
                                         <div className='mt-1 flex items-center border-b-[1px] border-dotted border-emerald-500'>
                                             <button className='font-medium hover:text-slate-500' onClick={addCurrency}>INR</button>
+
                                             <input type="text"
                                                 placeholder='Amount'
                                                 className='rounded-lg h-7 w-52 border-none focus:ring-0'
                                                 name='amount'
                                                 value={inputData.amount}
-                                                onChange={InputEvent}
+
+                                                onChange={(e) => {
+                                                    const name = e.target.name;
+                                                    const value = e.target.value;
+                                                    setAmount(value);
+                                                    handleCheck()
+                                                    InputEvent(name, value);
+                                                }}
                                             />
                                         </div>
+                                        {err && amount.length <= 0 ?
+                                            <label className='text-red-600 text-sm'>amount can not be zero</label> : ""}
                                     </div>
                                 </div>
 
@@ -349,14 +394,15 @@ const AddExpensePopup = (props) => {
 
 
                                 <div className='m-2'>
-                                    
+
                                 </div>
 
                                 {/* Buttond */}
                                 <div className='flex justify-evenly mt-6 mb-10'>
                                     <div className='py-1 px-4 mr-3 text-base font-normal bg-primary text-gray-900 rounded-lg dark:text-white hover:bg-primary dark:hover:bg-gray-700  '>
                                         <button className=' text-lg opacity-0.9 text-white hover:drop-shadow-xl rounded-full' onClick={addDate}>
-                                            25 Dec 2022
+
+                                            02 April 2023
                                         </button>
                                     </div>
                                     <div className='py-1 px-4 mr-3 text-base font-normal bg-primary text-gray-900 rounded-lg dark:text-white hover:bg-primary dark:hover:bg-gray-700 '>
@@ -379,10 +425,20 @@ const AddExpensePopup = (props) => {
                                         </div>
                                         <div className=' mr-3 text-base font-normal bg-primary text-gray-900 rounded-lg dark:text-white hover:bg-primary dark:hover:bg-gray-700 border-2 border-emerald-300 '>
                                             <button className='py-1 px-4 text-lg opacity-0.9 text-white hover:drop-shadow-xl rounded-full'
+                                                // disabled={err}
                                                 onClick={(e) => {
                                                     e.preventDefault();
                                                     FtglSaveBtn(false);
-                                                    postForm();
+                                                    handleCheck();
+                                                    if ( description.length === 0 || amount.length === 0) {
+                                                        //console.log()
+                                                        failed();
+                                                        FtglSaveBtn(true);
+                                                    }
+                                                    else {
+                                                        postForm();
+                                                    }
+
                                                 }}  >
                                                 Save
                                             </button>
@@ -431,8 +487,17 @@ const AddExpensePopup = (props) => {
                             InputSplitBetween={InputSplitBetween}
                             InputSplitEquilly={InputSplitEquilly}
                         />}
-                        {addon === 3 && <AddDatePopup />}
-                        {addon === 4 && <AddNotePopup closeAdd={closeAdd} />}
+                        {addon === 3 && <AddDatePopup
+                            paymentDate={paymentDate}
+                            cngDate={cngDate}
+                            closeAdd={closeAdd}
+                        />}
+                        {addon === 4 && <AddNotePopup
+                            cngNotes={cngNotes}
+                            closeAdd={closeAdd}
+                            notes={notes}
+
+                        />}
                         {addon === 6 && <AddCurrencyPopup closeAdd={closeAdd} />}
                         {/* </div> */}
                     </div>

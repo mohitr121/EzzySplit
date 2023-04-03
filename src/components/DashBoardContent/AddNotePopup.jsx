@@ -27,14 +27,26 @@ const AddNotePopup = (props) => {
             </div>
             <hr />
             <div className='mt-3 items-start mb-2'>
-              <textarea name="" cols="30" rows="8" placeholder='Add Note' className='rounded-lg'></textarea>
+              <textarea 
+              name="notes"
+              value={props.notes}
+              onChange={(e)=>{
+                  const value = e.target.value;
+                  props.cngNotes(value);
+                 }}
+              cols="30" rows="8" placeholder='Add Note' className='rounded-lg'></textarea>
             </div>
 
             <hr />
             <div className='flex justify-end mt-3'>
 
               <div className='py-1 px-4 mr-3 text-base font-normal bg-primary text-gray-900 rounded-lg dark:text-white hover:bg-primary dark:hover:bg-gray-700 border-2 border-emerald-300 '>
-                <button className=' text-lg opacity-0.9 text-white hover:drop-shadow-xl rounded-full' >
+                <button className=' text-lg opacity-0.9 text-white hover:drop-shadow-xl rounded-full'
+                onClick={
+                (e) => {
+                  e.preventDefault();
+                  props.closeAdd()
+                }} >
                   Done
                 </button>
               </div>

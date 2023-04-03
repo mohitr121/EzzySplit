@@ -48,7 +48,7 @@ const DashBoardContent = () => {
   const groupData = async () => {
     try {
       await axios
-        .get("http://localhost:8000/group/details/6424086137ed26b256546d60", {
+        .get("http://localhost:8000/group/details/64283b4cb3dc45d696bc578b", {
           responseType: "json",
         })
         .then(function (resp) {
@@ -73,7 +73,7 @@ const DashBoardContent = () => {
   const getData = async () => {
     try {
       axios
-        .get("http://localhost:8000/user/profile/6424078937ed26b256546d5e", {
+        .get("http://localhost:8000/user/profile/642839ceb3dc45d696bc5786", {
           responseType: "json",
         })
         .then(function (response) {
